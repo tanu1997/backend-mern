@@ -41,12 +41,16 @@ const mongoose = require('mongoose');
                 err => res.status(400).json({sts: 'err'})
             )
 
-            res.json({sts : 'success'})
+            // res.json({sts : 'success'})
         })
 
         app.get('/',(req,res) =>
         {
-
+         const cars = Car.find((err, crs) => 
+         {
+            if(err) res.status(500).json()
+            res.json(crs)
+         })
         })
 
         app.put('/',(req,res) =>
