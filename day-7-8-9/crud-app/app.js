@@ -11,15 +11,28 @@ const mongoose = require('mongoose');
         })
         
         const CarSchema = new mongoose.Schema({
-            model : {type : String , unique : true },
+            model : {type : String , unique: true},
+            slug  : {type : String , unique :true},
             country : {type : Number},
             isFwd : {type : Boolean},
             make : {type :String}
         })
 
+        CarSchema.pre('save', async function)
+        {
+            new Promise((resolve, reject) => {
+                
+            })
+        }
+
         CarSchema.pre('save',next =>{
             console.log('PRE : Middleware Executed')
-            next()
+            console.log(this)
+            this.slug = slugifyModel(this.model )
+
+           
+
+            next()  
         })
 
         CarSchema.post('save',doc =>{
@@ -65,7 +78,7 @@ const mongoose = require('mongoose');
            
 
             const dbObj = new Car({ ...reqCar})
-            
+           
 
             dbObj.save()
             .then(
@@ -108,4 +121,9 @@ const mongoose = require('mongoose');
         {
 
         })
+
+        function slugifyModel(model)
+        {
+            return model.toString().toLowerCase().replaceAll(' ', '-')
+        }
 
