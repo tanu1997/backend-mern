@@ -8,7 +8,8 @@ const mongoose = require('mongoose');
 -db   : test */
  
 
-mongoose.connect('mongodb://localhost:27017/test'); //create single connection only
+//mongoose.connect('mongodb://localhost:27017/test'); //create single connection only
+mongoose.connect('mongodb://127.0.0.1/test');
 mongoose.set('debug', true);
 
 'Mongoose is ODM'
