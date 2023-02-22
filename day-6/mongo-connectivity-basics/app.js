@@ -34,6 +34,6 @@ kitty.save()
 //     console.log(cats)
 //   })
 
-Cat.find({'isBig':false},{isBig : 0 },(err, cats)=>console.log(cats)).limit(2)
+Cat.find({'isBig':false},{isBig : 0, __v:0},(err, cats)=>console.log(cats)).limit(2)
    
 
