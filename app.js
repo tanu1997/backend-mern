@@ -13,14 +13,34 @@ mongoose.connect('mongodb://127.0.0.1/test').then(() => {
 const CarSchema = new mongoose.Schema(
     {
         model : {type : String ,unique : true},
+        slug : {type : String ,unique: true},
         country : {type: Number},
         isFwd : { type : Boolean},
         make : { type :String}
     }
 )
 
-CarSchema.pre('save' ,next =>{
+CarSchema.pre('save' ,async function(){
+    console.log('Waiting')
+  await  new Promise((res, rej) =>
+   {
+    setTimeout( () =>
+    {
+        console.log('Data Fetched')
+        res()
+    }   ,1500)
+   })
+
+   console.log('I have reached this line')
+})
+
+CarSchema.pre('save' ,async function(next){
     console.log('Pre : Middleware Executed')
+    console.log(this)
+    this.slug = slugifyModel(this.model)
+
+   
+
     next()
 })
 
@@ -97,3 +117,10 @@ app.delete('/',(req,res) =>
 {
     
 })
+
+function slugifyModel(model)
+{
+    return model.toString()
+                .toLowerCase()
+                .replaceAll(' ','_')
+}
