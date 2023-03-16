@@ -60,6 +60,17 @@ app.post('/login',express.json(), (req, res)=>
    
 })
 
+app.get('/balance', expressjwt({ secret: "abc123",
+algorithms: ["HS256"]}),(req,res)=>{
+    console.log(req.auth)
+res.json({sts : 'success', dt:req.auth})
+})
+//if you have token , then and only then I will allow you to check the balance
+//here client will pass the token from request header.
+// this end point will extract or verify the token and check for validity
+
+
+
 app.listen(9000,() =>
 {
     console.log('✔ Server Running Successfully')
