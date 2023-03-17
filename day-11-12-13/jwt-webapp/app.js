@@ -18,6 +18,7 @@ const express = require('express');
 const { response } = require('express');
 const app = express()
 
+
 const jwt = require('jsonwebtoken')
 const {expressjwt} = require('express-jwt')
 
@@ -69,7 +70,21 @@ res.json({sts : 'success', dt:req.auth})
 //here client will pass the token from request header.
 // this end point will extract or verify the token and check for validity
 
+app.post('/newuser', expressjwt({ secret: "abc123",algorithms: ["HS256"]}),
+(req,res)=>{
+    console.log(req.auth)
+const {role} =req.auth._doc
+if(role && role =='admin')
 
+    res.json({sts: 'Create New User'})
+
+
+else
+
+    res.status(401).json({sts: 'Unauthorized'})
+
+
+})
 
 app.listen(9000,() =>
 {
