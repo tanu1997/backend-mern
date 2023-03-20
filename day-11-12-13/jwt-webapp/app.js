@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://127.0.0.1:27017/test');
 
 const AppUserSchema = new mongoose.Schema({
-    userName: {type: String, unique: true},
+    userName: {type: String},
     password: {type: String},
 })
 
@@ -61,30 +61,63 @@ app.post('/login',express.json(), (req, res)=>
    
 })
 
+//this endpoint need to be accessible only to admin users
+app.post('/newuser',
+express.json(),// converts json string to java script object
+expressjwt({secret: "abc123",algorithms:["HS256"]}), //first three steps are performed by this
+(req,res)=>
+{
+    // 1. Client will send the token in the request header,
+    // 2. you need to verify that token and extract the details,
+    // 3. extracted details needs made available for use,
+    // 4. check user role if admin then and only then perform this action
+    // 5. if user is normal, return 401 unauthorized status
+
+    console.log(req.auth)
+    const {role}=req.auth._doc
+    if(role && role=='admin')
+    
+        res.json({sts: 'Create New User'})
+
+        else res.status(401).json({sts: 'Unauthorized'})
+    
+
+
+ 
+
+})
+
 app.get('/balance', expressjwt({ secret: "abc123",
 algorithms: ["HS256"]}),(req,res)=>{
     console.log(req.auth)
 res.json({sts : 'success', dt:req.auth})
 })
+
+app.put('/withdraw',expressjwt({ secret: "abc123",
+algorithms: ["HS256"]}),
+(req,res)=>
+{
+    res.json({sts:'updating'})
+})
 //if you have token , then and only then I will allow you to check the balance
 //here client will pass the token from request header.
 // this end point will extract or verify the token and check for validity
 
-app.post('/newuser', expressjwt({ secret: "abc123",algorithms: ["HS256"]}),
-(req,res)=>{
-    console.log(req.auth)
-const {role} =req.auth._doc
-if(role && role =='admin')
+// app.post('/newuser', expressjwt({ secret: "abc123",algorithms: ["HS256"]}),
+// (req,res)=>{
+//     console.log(req.auth)
+// const {role} =req.auth._doc
+// if(role && role =='admin')
 
-    res.json({sts: 'Create New User'})
-
-
-else
-
-    res.status(401).json({sts: 'Unauthorized'})
+//     res.json({sts: 'Create New User'})
 
 
-})
+// else
+
+//     res.status(401).json({sts: 'Unauthorized'})
+
+
+// })
 
 app.listen(9000,() =>
 {
