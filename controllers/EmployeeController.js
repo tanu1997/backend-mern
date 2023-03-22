@@ -39,7 +39,7 @@ const show=(req,res,next) =>
 //add new employee
     const store =(req,res,next)=>
     {
-        let Employee= new Employee({
+        let employee= new Employee({
             name: req.body.name,
             designation: req.body.designation,
             email: req.body.email,
@@ -96,4 +96,21 @@ const update =(req,res,next)=>
 const destroy=(req,res,next)=>
 {
     let EmployeeID=req.body.EmployeeID
+    Employee.findByIdAndRemove(EmployeeID)
+   .then(()=>
+   {
+    res.json({
+        message: 'Employee deleted Successfully!'
+    })
+   })
+   .catch(error=>
+    {
+        res.json({
+            message: 'An error occured!'
+        })
+    })
+}
+
+module.exports={
+    index,show,store,update,destroy
 }
