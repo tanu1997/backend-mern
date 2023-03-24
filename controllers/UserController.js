@@ -77,6 +77,7 @@ const store =(req,res,next)=>
             name: req.body.name,
             designation: req.body.designation,
             email: req.body.email,
+            password:req.body.password,
             phone: req.body.phone,
             age: req.body.age,  
         })
