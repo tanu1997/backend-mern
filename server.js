@@ -7,6 +7,8 @@ const morgan= require('morgan')
 
 const EmployeeRoute= require('./routes/employee')
 
+const UserRoute= require('./routes/user_route')
+
 mongoose.connect('mongodb://127.0.0.1/test');
 const db= mongoose.connection
 
@@ -37,3 +39,4 @@ app.listen(PORT , () => {
 
 
 app.use('/api/employee',EmployeeRoute)
+app.use('/api/user',UserRoute)
